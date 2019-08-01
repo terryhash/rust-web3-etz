@@ -2,12 +2,12 @@
 name = "web3_etz"
 version = "0.8.0"
 description = "Ethereum JSON-RPC client."
-homepage = "https://github.com/tomusdrw/rust-web3"
-repository = "https://github.com/tomusdrw/rust-web3"
+homepage = "https://github.com/rooat/rust-web3-etz.git"
+repository = "https://github.com/rooat/rust-web3-etz.git"
 documentation = "https://docs.rs/web3"
 license = "MIT"
 keywords = ["jsonrpc", "web3", "ethereum", "rpc", "client"]
-authors = ["Tomasz Drwięga <tomasz@parity.io>"]
+authors = ["rooat <welling1234@gmail.com>"]
 readme = "README.md"
 edition = "2018"
 
