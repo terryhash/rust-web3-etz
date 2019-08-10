@@ -1,7 +1,7 @@
 extern crate tokio_core;
-extern crate web3;
+extern crate web3_etz;
 
-use web3::futures::Future;
+use web3_etz::futures::Future;
 
 const MAX_PARALLEL_REQUESTS: usize = 64;
 
@@ -10,18 +10,18 @@ fn main() {
     let remote = event_loop.remote();
 
     let http =
-        web3::transports::Http::with_event_loop("http://localhost:8545", &event_loop.handle(), MAX_PARALLEL_REQUESTS)
+        web3_etz::transports::Http::with_event_loop("http://localhost:8545", &event_loop.handle(), MAX_PARALLEL_REQUESTS)
             .unwrap();
 
-    let web3 = web3::Web3::new(web3::transports::Batch::new(http));
-    let _ = web3.eth().accounts();
+    let web3_etz = web3_etz::web3_etz::new(web3_etz::transports::Batch::new(http));
+    let _ = web3_etz.eth().accounts();
 
-    let block = web3.eth().block_number().then(|block| {
+    let block = web3_etz.eth().block_number().then(|block| {
         println!("Best Block: {:?}", block);
         Ok(())
     });
 
-    let result = web3.transport().submit_batch().then(|accounts| {
+    let result = web3_etz.transport().submit_batch().then(|accounts| {
         println!("Result: {:?}", accounts);
         Ok(())
     });

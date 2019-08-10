@@ -1,11 +1,11 @@
-extern crate web3;
+extern crate web3_etz;
 
-use web3::futures::Future;
+use web3_etz::futures::Future;
 
 fn main() {
-    let (_eloop, http) = web3::transports::Http::new("http://localhost:8545").unwrap();
-    let web3 = web3::Web3::new(http);
-    let accounts = web3.eth().accounts().wait().unwrap();
+    let (_eloop, http) = web3_etz::transports::Http::new("http://localhost:8545").unwrap();
+    let web3_etz = web3_etz::Web3::new(http);
+    let accounts = web3_etz.eth().block_number().wait().unwrap();
 
     println!("Accounts: {:?}", accounts);
 }

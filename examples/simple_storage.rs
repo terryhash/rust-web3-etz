@@ -1,26 +1,26 @@
 //based on examples/contract.rs
 extern crate rustc_hex;
-extern crate web3;
+extern crate web3_etz;
 
 use std::time;
-use web3::contract::{Contract, Options};
-use web3::futures::Future;
-use web3::types::U256;
+use web3_etz::contract::{Contract, Options};
+use web3_etz::futures::Future;
+use web3_etz::types::U256;
 
 fn main() {
-    let (_eloop, transport) = web3::transports::Http::new("http://localhost:8545").unwrap();
-    let web3 = web3::Web3::new(transport);
-    let accounts = web3.eth().accounts().wait().unwrap();
+    let (_eloop, transport) = web3_etz::transports::Http::new("http://localhost:8545").unwrap();
+    let web3_etz = web3_etz::Web3::new(transport);
+    let accounts = web3_etz.eth().accounts().wait().unwrap();
 
     //Get current balance
-    let balance = web3.eth().balance(accounts[0], None).wait().unwrap();
+    let balance = web3_etz.eth().balance(accounts[0], None).wait().unwrap();
 
     println!("Balance: {}", balance);
 
     // Get the contract bytecode for instance from Solidity compiler
     let bytecode = include_str!("./build/SimpleStorage.bin");
     // Deploying a contract
-    let contract = Contract::deploy(web3.eth(), include_bytes!("./build/SimpleStorage.abi"))
+    let contract = Contract::deploy(web3_etz.eth(), include_bytes!("./build/SimpleStorage.abi"))
         .unwrap()
         .confirmations(0)
         .poll_interval(time::Duration::from_secs(10))

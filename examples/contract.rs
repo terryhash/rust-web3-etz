@@ -1,24 +1,24 @@
 extern crate env_logger;
 extern crate rustc_hex;
-extern crate web3;
+extern crate web3_etz;
 
-use web3::contract::{Contract, Options};
-use web3::futures::Future;
-use web3::types::{Address, U256};
+use web3_etz::contract::{Contract, Options};
+use web3_etz::futures::Future;
+use web3_etz::types::{Address, U256};
 
 fn main() {
     env_logger::init();
-    let (eloop, http) = web3::transports::Http::new("http://localhost:8545").unwrap();
+    let (eloop, http) = web3_etz::transports::Http::new("http://localhost:8545").unwrap();
     // run the event loop in the background
     eloop.into_remote();
 
-    let web3 = web3::Web3::new(http);
+    let web3_etz = web3_etz::Web3::new(http);
 
     let my_account: Address = "d028d24f16a8893bd078259d413372ac01580769".parse().unwrap();
     // Get the contract bytecode for instance from Solidity compiler
     let bytecode = include_str!("./contract_token.code");
     // Deploying a contract
-    let contract = Contract::deploy(web3.eth(), include_bytes!("../src/contract/res/token.json"))
+    let contract = Contract::deploy(web3_etz.eth(), include_bytes!("../src/contract/res/token.json"))
         .unwrap()
         .confirmations(0)
         .options(Options::with(|opt| {
@@ -42,7 +42,7 @@ fn main() {
     // Accessing existing contract
     let contract_address = contract.address();
     let contract = Contract::from_json(
-        web3.eth(),
+        web3_etz.eth(),
         contract_address,
         include_bytes!("../src/contract/res/token.json"),
     )

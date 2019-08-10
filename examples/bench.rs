@@ -1,10 +1,10 @@
 extern crate parking_lot;
-extern crate web3;
+extern crate web3_etz;
 
 use parking_lot::Mutex;
 use std::sync::{atomic, Arc};
 use std::{thread, time};
-use web3::futures::Future;
+use web3_etz::futures::Future;
 
 fn as_millis(dur: time::Duration) -> u64 {
     dur.as_secs() * 1_000 + dur.subsec_nanos() as u64 / 1_000_000
@@ -61,23 +61,23 @@ impl Ticker {
 
 fn main() {
     let requests = 200_000;
-    let (eloop, http) = web3::transports::Http::new("http://localhost:8545/").unwrap();
+    let (eloop, http) = web3_etz::transports::Http::new("http://localhost:8545/").unwrap();
     bench("http", eloop, http, requests);
 
-    let (eloop, http) = web3::transports::Ipc::new("./jsonrpc.ipc").unwrap();
+    let (eloop, http) = web3_etz::transports::Ipc::new("./jsonrpc.ipc").unwrap();
     bench(" ipc", eloop, http, requests);
 }
 
-fn bench<T: web3::Transport>(id: &str, eloop: web3::transports::EventLoopHandle, transport: T, max: usize)
+fn bench<T: web3_etz::Transport>(id: &str, eloop: web3_etz::transports::EventLoopHandle, transport: T, max: usize)
 where
     T::Out: Send + 'static,
 {
-    let web3 = web3::Web3::new(transport);
+    let web3_etz = web3_etz::Web3::new(transport);
     let ticker = Arc::new(Ticker::new(id));
     for _ in 0..max {
         let ticker = ticker.clone();
         ticker.start();
-        let accounts = web3.eth().block_number().then(move |res| {
+        let accounts = web3_etz.eth().block_number().then(move |res| {
             if let Err(e) = res {
                 println!("Error: {:?}", e);
             }

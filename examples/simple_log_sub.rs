@@ -1,26 +1,26 @@
 extern crate rustc_hex;
 extern crate tokio_core;
-extern crate web3;
+extern crate web3_etz;
 
 use std::time;
-use web3::contract::{Contract, Options};
-use web3::futures::{Future, Stream};
-use web3::types::FilterBuilder;
+use web3_etz::contract::{Contract, Options};
+use web3_etz::futures::{Future, Stream};
+use web3_etz::types::FilterBuilder;
 
 fn main() {
     let mut eloop = tokio_core::reactor::Core::new().unwrap();
-    let web3 =
-        web3::Web3::new(web3::transports::WebSocket::with_event_loop("ws://localhost:8546", &eloop.handle()).unwrap());
+    let web3_etz =
+        web3_etz::Web3::new(web3_etz::transports::WebSocket::with_event_loop("ws://localhost:8546", &eloop.handle()).unwrap());
 
     // Get the contract bytecode for instance from Solidity compiler
     let bytecode = include_str!("./build/SimpleEvent.bin");
 
     eloop
-        .run(web3.eth().accounts().then(|accounts| {
+        .run(web3_etz.eth().accounts().then(|accounts| {
             let accounts = accounts.unwrap();
             println!("accounts: {:?}", &accounts);
 
-            Contract::deploy(web3.eth(), include_bytes!("./build/SimpleEvent.abi"))
+            Contract::deploy(web3_etz.eth(), include_bytes!("./build/SimpleEvent.abi"))
                 .unwrap()
                 .confirmations(1)
                 .poll_interval(time::Duration::from_secs(10))
@@ -46,7 +46,7 @@ fn main() {
                         )
                         .build();
 
-                    let event_future = web3
+                    let event_future = web3_etz
                         .eth_subscribe()
                         .subscribe_logs(filter)
                         .then(|sub| {
